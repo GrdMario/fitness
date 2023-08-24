@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>6cb40438-c328-4455-bea4-0b30418df3c9</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Fitness.Application\Fitness.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\Fitness.Infrastructure.Adapter.Email\Fitness.Infrastructure.Adapter.Email.csproj" />
+    <ProjectReference Include="..\Infrastructure\Fitness.Infrastructure.Adapter.Security\Fitness.Infrastructure.Adapter.Security.csproj" />
+    <ProjectReference Include="..\Infrastructure\Fitness.Infrastructure.Db.Blob\Fitness.Infrastructure.Db.Blob.csproj" />
+    <ProjectReference Include="..\Infrastructure\Fitness.Infrastructure.Db.Users\Fitness.Infrastructure.Db.Users.csproj" />
+    <ProjectReference Include="..\Presentation\Fitness.Presentation.Api\Fitness.Presentation.Api.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,1 @@
+dotnet ef migrations add InitialCreate --project C:\Users\Mario\source\fitness\src\Infrastructure\Fitness.Infrastructure.Db.Users -- MssqlSettings:ConnectionString 6cb40438-c328-4455-bea4-0b30418df3c9 C:\Users\Mario\source\fitness\src\Fitness
