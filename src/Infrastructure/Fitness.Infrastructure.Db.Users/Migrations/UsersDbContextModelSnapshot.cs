@@ -187,19 +187,15 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Fitness.Infrastructure.Db.Users.Configurations.TestTable", b =>
+            modelBuilder.Entity("Fitness.Infrastructure.Db.Users.Configurations.Test", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("TestTable", (string)null);
+                    b.ToTable("Test");
                 });
 
             modelBuilder.Entity("Fitness.Domain.Claim", b =>

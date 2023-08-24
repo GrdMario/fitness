@@ -23,10 +23,15 @@
         public string GenerateAccessToken(User user)
         {
             var issuer = this.settings.JwtTokenSettings.Issuer;
+
             var audience = this.settings.JwtTokenSettings.Audience;
+
             var nbf = SystemClock.Now.DateTime;
+
             var expires = SystemClock.Now.AddMinutes(this.settings.JwtTokenSettings.ExpiresInMinutes).DateTime;
+
             var key = Encoding.UTF8.GetBytes(this.settings.JwtTokenSettings.Secret);
+
             var signInCredentials = new SigningCredentials
                     (new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha512Signature);

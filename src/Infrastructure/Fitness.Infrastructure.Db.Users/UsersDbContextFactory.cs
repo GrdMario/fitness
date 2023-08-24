@@ -2,38 +2,19 @@
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Design;
-    using Microsoft.Extensions.Configuration;
     using System;
 
     internal sealed class UsersDbContextFactory : IDesignTimeDbContextFactory<UsersDbContext>
     {
         public UsersDbContext CreateDbContext(string[] args)
         {
-            IConfiguration configuration = BuildConfiguration(args);
-
             var optionsBuilder = new DbContextOptionsBuilder<UsersDbContext>();
-            var connectionString = configuration.GetSection(args[0]).Value;
 
-            optionsBuilder
-                .UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer(null);
 
             var instance = new UsersDbContext(optionsBuilder.Options);
 
             return instance is null ? throw new InvalidOperationException($"Unable to initialize {nameof(UsersDbContext)} instance.") : instance;
-        }
-
-        private static IConfigurationRoot BuildConfiguration(string[] args)
-        {
-            return new ConfigurationBuilder()
-                .SetBasePath(args[2])
-                .AddJsonFile(
-                    path: "appsettings.json",
-                    optional: false,
-                    reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .AddUserSecrets(args[1])
-                .AddCommandLine(args)
-                .Build();
         }
     }
 }
