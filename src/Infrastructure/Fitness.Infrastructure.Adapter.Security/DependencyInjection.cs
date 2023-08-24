@@ -8,7 +8,6 @@
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
     using System.Text;
-    using System.Threading.Tasks;
 
     public class SecurityAdapterSettingsFactory : IConfigureOptions<SecurityAdapterSettings>
     {
@@ -48,9 +47,9 @@
                 {
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidIssuer = settings.TokenSettings.Issuer,
-                        ValidAudience = settings.TokenSettings.Audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.TokenSettings.Secret)),
+                        ValidIssuer = settings.JwtTokenSettings.Issuer,
+                        ValidAudience = settings.JwtTokenSettings.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.JwtTokenSettings.Secret)),
                         ValidateIssuer = false,
                         ValidateAudience = false,
                         ValidateLifetime = false,
@@ -66,12 +65,19 @@
     {
         public const string Key = nameof(SecurityAdapterSettings);
 
-        public TokenSettings TokenSettings { get; set; } = default!;
+        public JwtTokenSettings JwtTokenSettings { get; set; } = default!;
+
+        public RefreshTokenSettings RefreshTokenSettings { get; set; } = default!;
 
         public PasswordSettings PasswordSettings { get; set; } = default!;
     }
 
-    public class TokenSettings
+    public class RefreshTokenSettings
+    {
+        public int ValidForDays { get; set; } = default!;
+    }
+
+    public class JwtTokenSettings
     {
         public string Audience { get; set; } = default!;
 

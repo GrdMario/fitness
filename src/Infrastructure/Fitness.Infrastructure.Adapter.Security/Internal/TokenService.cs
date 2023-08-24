@@ -22,11 +22,11 @@
 
         public string GenerateAccessToken(User user)
         {
-            var issuer = this.settings.TokenSettings.Issuer;
-            var audience = this.settings.TokenSettings.Audience;
+            var issuer = this.settings.JwtTokenSettings.Issuer;
+            var audience = this.settings.JwtTokenSettings.Audience;
             var nbf = SystemClock.Now.DateTime;
-            var expires = SystemClock.Now.AddMinutes(this.settings.TokenSettings.ExpiresInMinutes).DateTime;
-            var key = Encoding.UTF8.GetBytes(this.settings.TokenSettings.Secret);
+            var expires = SystemClock.Now.AddMinutes(this.settings.JwtTokenSettings.ExpiresInMinutes).DateTime;
+            var key = Encoding.UTF8.GetBytes(this.settings.JwtTokenSettings.Secret);
             var signInCredentials = new SigningCredentials
                     (new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha512Signature);
@@ -58,7 +58,7 @@
             var token = new RefreshToken(
                 SystemGuid.NewGuid,
                 user.Id,
-                SystemClock.UtcNow.AddDays(30),
+                SystemClock.UtcNow.AddDays(this.settings.RefreshTokenSettings.ValidForDays),
                 SystemClock.UtcNow);
 
             return token;
