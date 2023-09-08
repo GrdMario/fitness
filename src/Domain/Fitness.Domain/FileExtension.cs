@@ -22,7 +22,7 @@
 
         private static readonly FileExtension png = new(
             2,
-            ",png",
+            ".png",
             new List<byte[]> { new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A } }
         );
 
@@ -48,6 +48,12 @@
             }
         );
 
+        private static readonly FileExtension mp4 = new(
+            5,
+            ".mp4",
+            new List<byte[]>() { }
+        );
+
         public static FileExtension Gif { get; } = gif;
 
         public static FileExtension Png { get; } = png;
@@ -55,5 +61,7 @@
         public static FileExtension Jpeg { get; } = jpeg;
 
         public static FileExtension Jpg { get; } = jpg;
+
+        public static FileExtension Mp4 { get; } = mp4;
     }
 }

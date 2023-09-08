@@ -10,8 +10,6 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
     <PackageReference Include="MediatR" Version="12.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjectionFixed" Version="5.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="7.0.8" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
   </ItemGroup>
 
@@ -19,6 +17,11 @@
     <ProjectReference Include="..\..\Blocks\Fitness.Blocks.Common.Exceptions\Fitness.Blocks.Common.Exceptions.csproj" />
     <ProjectReference Include="..\..\Blocks\Fitness.Blocks.Common.Kernel\Fitness.Blocks.Common.Kernel.csproj" />
     <ProjectReference Include="..\Fitness.Application.Contracts\Fitness.Application.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Files\Models\" />
+    <Folder Include="Files\Validators\" />
   </ItemGroup>
 
 </Project>

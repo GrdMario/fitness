@@ -30,4 +30,8 @@
     <ProjectReference Include="..\..\Blocks\Fitness.Blocks.Common.Exceptions\Fitness.Blocks.Common.Exceptions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Internal\Results\" />
+  </ItemGroup>
+
 </Project>

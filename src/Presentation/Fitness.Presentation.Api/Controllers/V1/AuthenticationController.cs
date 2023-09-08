@@ -3,14 +3,16 @@
     using Fitness.Application.Authentication;
     using Fitness.Application.Authentication.Models;
     using Fitness.Application.Contracts.Blob;
+    using Fitness.Blocks.Common.Exceptions;
     using Fitness.Presentation.Api.Internal.Constants;
     using MediatR;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using System;
     using System.Threading.Tasks;
 
     [ApiVersion(ApiVersions.V1)]
-    public class AuthenticationController : ApiControllerBase
+    internal sealed class AuthenticationController : ApiControllerBase
     {
         public AuthenticationController(IMediator mediator) : base(mediator)
         {
@@ -68,13 +70,6 @@
         [Authorize]
         [HttpGet("protected")]
         public async Task<IActionResult> Protected()
-        {
-            return Ok(await Task.FromResult("Protected route."));
-        }
-
-        [AllowAnonymous]
-        [HttpGet("test")]
-        public async Task<IActionResult> Test()
         {
             return Ok(await Task.FromResult("Protected route."));
         }

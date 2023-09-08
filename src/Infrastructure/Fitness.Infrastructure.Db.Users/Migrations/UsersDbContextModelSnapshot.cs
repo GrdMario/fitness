@@ -51,15 +51,14 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<byte[]>("Data")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<Guid>("EntityId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("FileExtensionId")
                         .HasColumnType("int");
+
+                    b.Property<long>("FileLength")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("FileTypeId")
                         .HasColumnType("int");
@@ -72,10 +71,6 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FileExtensionId");
-
-                    b.HasIndex("FileTypeId");
 
                     b.ToTable("Files", (string)null);
                 });
@@ -105,7 +100,7 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                         new
                         {
                             Id = 2,
-                            Name = ",png"
+                            Name = ".png"
                         },
                         new
                         {
@@ -116,6 +111,11 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                         {
                             Id = 4,
                             Name = ".jpg"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = ".mp4"
                         });
                 });
 
@@ -139,12 +139,12 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Exercise Video"
+                            Name = "videos"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Profile Picture"
+                            Name = "pictures"
                         });
                 });
 
@@ -205,25 +205,6 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Fitness.Domain.File", b =>
-                {
-                    b.HasOne("Fitness.Domain.FileExtension", "FileExtension")
-                        .WithMany()
-                        .HasForeignKey("FileExtensionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fitness.Domain.FileType", "FileType")
-                        .WithMany()
-                        .HasForeignKey("FileTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FileExtension");
-
-                    b.Navigation("FileType");
                 });
 
             modelBuilder.Entity("Fitness.Domain.User", b =>

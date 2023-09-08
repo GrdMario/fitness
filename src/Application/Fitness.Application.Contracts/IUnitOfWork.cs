@@ -10,5 +10,7 @@
         IUserRepository Users { get; }
 
         IRefreshTokenRepository RefreshTokens { get; }
+
+        IFileRepository Files { get; }
     }
 }

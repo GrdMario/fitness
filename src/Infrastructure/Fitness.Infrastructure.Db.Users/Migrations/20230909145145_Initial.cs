@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Fitness.Infrastructure.Db.Users.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,24 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FileExtensions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileExtensionId = table.Column<int>(type: "int", nullable: false),
+                    FileLength = table.Column<long>(type: "bigint", nullable: false),
+                    FileTypeId = table.Column<int>(type: "int", nullable: false),
+                    EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,6 +72,17 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Test",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Test", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -64,36 +93,6 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Files",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileExtensionId = table.Column<int>(type: "int", nullable: false),
-                    Data = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    FileTypeId = table.Column<int>(type: "int", nullable: false),
-                    EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Files", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Files_FileExtensions_FileExtensionId",
-                        column: x => x.FileExtensionId,
-                        principalTable: "FileExtensions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Files_FileTypes_FileTypeId",
-                        column: x => x.FileTypeId,
-                        principalTable: "FileTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -161,9 +160,10 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                 values: new object[,]
                 {
                     { 1, ".gif" },
-                    { 2, ",png" },
+                    { 2, ".png" },
                     { 3, ".jpeg" },
-                    { 4, ".jpg" }
+                    { 4, ".jpg" },
+                    { 5, ".mp4" }
                 });
 
             migrationBuilder.InsertData(
@@ -171,24 +171,14 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Exercise Video" },
-                    { 2, "Profile Picture" }
+                    { 1, "videos" },
+                    { 2, "pictures" }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Claims_UserId",
                 table: "Claims",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Files_FileExtensionId",
-                table: "Files",
-                column: "FileExtensionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Files_FileTypeId",
-                table: "Files",
-                column: "FileTypeId");
         }
 
         /// <inheritdoc />
@@ -201,7 +191,13 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                 name: "EmailVerifications");
 
             migrationBuilder.DropTable(
+                name: "FileExtensions");
+
+            migrationBuilder.DropTable(
                 name: "Files");
+
+            migrationBuilder.DropTable(
+                name: "FileTypes");
 
             migrationBuilder.DropTable(
                 name: "Profiles");
@@ -210,10 +206,7 @@ namespace Fitness.Infrastructure.Db.Users.Migrations
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
-                name: "FileExtensions");
-
-            migrationBuilder.DropTable(
-                name: "FileTypes");
+                name: "Test");
 
             migrationBuilder.DropTable(
                 name: "Users");

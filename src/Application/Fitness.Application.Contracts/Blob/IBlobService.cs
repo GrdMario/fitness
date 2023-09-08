@@ -2,24 +2,23 @@
 {
     using Fitness.Domain;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
     public interface IBlobService
     {
-        //void Get();
+        Task<DownloadFile> GetAsync(
+            string containerName,
+            string blobName,
+            long start,
+            long end,
+            long lenght,
+            CancellationToken cancellationToken);
 
-        //Task GetPropetiesAsync(string blobName, CancellationToken cancellationToken);
+        Task UploadAsync(string containerName, string blobName, byte[] data, CancellationToken cancellationToken);
 
-        //Task<DownloadFile> GetFileAsync(long From, long To, long Size, CancellationToken cancellationToken);
-
-        //Task<DownloadFile> AddAsync(UploadFile file, CancellationToken cancellationToken);
+        Task DeleteAsync(string containerName, string blobName, CancellationToken cancellationToken);
     }
 
-    public record DownloadFile(long From, long To, byte[] Data);
-
-    public record UploadFile(long From, long To, long Size, string BlobName);
+    public record DownloadFile(long From, long To, byte[] Data, long Length, string ContentType);
 }

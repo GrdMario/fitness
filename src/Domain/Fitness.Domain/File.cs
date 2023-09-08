@@ -10,7 +10,7 @@
             Guid id,
             string name,
             FileExtension fileExtension,
-            byte[] data,
+            long fileLenght,
             FileType fileType,
             Guid entityId,
             bool isDeleted,
@@ -18,9 +18,9 @@
         {
             this.Id = id;
             this.Name = name;
-            this.FileExtension = fileExtension;
-            this.Data = data;
-            this.FileType = fileType;
+            this.FileExtensionId = fileExtension.Id;
+            this.FileLength = fileLenght;
+            this.FileTypeId = fileType.Id;
             this.EntityId = entityId;
             this.IsDeleted = isDeleted;
             this.CreatedAt = createdAt;
@@ -32,13 +32,9 @@
 
         public int FileExtensionId { get; } = default;
 
-        public FileExtension FileExtension { get; } = default!;
-
-        public byte[] Data { get; } = default!;
+        public long FileLength { get; } = default!;
 
         public int FileTypeId { get; }
-
-        public FileType FileType { get; } = default!;
 
         public Guid EntityId { get; }
 

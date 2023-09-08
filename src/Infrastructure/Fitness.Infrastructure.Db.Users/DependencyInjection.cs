@@ -19,6 +19,7 @@
             services.AddDbContext<UsersDbContext>(options => options.UseSqlServer(settings.ConnectionString));
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFileRepository, FileRepository>();
 
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 

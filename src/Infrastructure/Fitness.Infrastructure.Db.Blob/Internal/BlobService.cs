@@ -3,7 +3,6 @@
     using Azure.Storage.Blobs;
     using Azure.Storage.Blobs.Models;
     using Fitness.Application.Contracts.Blob;
-    using System.Runtime.CompilerServices;
     using System.Threading;
 
     internal sealed class BlobService : IBlobService
@@ -15,70 +14,53 @@
             this.blobServiceClient = blobServiceClient;
         }
 
-        public Task<DownloadFile> AddAsync(UploadFile file, CancellationToken cancellationToken)
+        public async Task DeleteAsync(string containerName, string blobName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var client = this.blobServiceClient.GetBlobContainerClient(containerName).GetBlobClient(blobName);
+
+            await client.DeleteIfExistsAsync(cancellationToken: cancellationToken);
         }
 
-        public async Task Get(CancellationToken cancellationToken)
+        public async Task<DownloadFile> GetAsync(
+            string blobContainerName,
+            string blobName,
+            long start,
+            long end,
+            long lenght,
+            CancellationToken cancellationToken)
         {
-            var cs = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;";
-            string blobUrl = "http://127.0.0.1:10000/devstoreaccount1/fitness-thumbnail/test.xml";
+            var client = this.blobServiceClient.GetBlobContainerClient(blobContainerName).GetBlobClient(blobName);
 
-            var blobServiceClient = new BlobServiceClient(cs);
-            var bub = new BlobUriBuilder(new Uri(blobUrl));
-            var containerClient = this.blobServiceClient.GetBlobContainerClient(bub.BlobContainerName);
-            var client = containerClient.GetBlobClient(bub.BlobName);
+            var response = await client.DownloadStreamingAsync(
+                new BlobDownloadOptions()
+                {
+                    Range = new Azure.HttpRange(start, end)
+                },
+                cancellationToken
+            );
 
-            var response = await client.GetPropertiesAsync(cancellationToken: cancellationToken);
-            var properties = response.Value;
-            long contentLength = properties.ContentLength;
-            DateTimeOffset lastModified = properties.LastModified;
+            using var stream = new MemoryStream();
+            await response.Value.Content.CopyToAsync(stream, cancellationToken);
 
+            var file = new DownloadFile(
+                start,
+                end,
+                stream.ToArray(),
+                lenght,
+                response.Value.Details.ContentType
+            );
 
+            return file;
 
-            var x = blobServiceClient.GetBlobContainerClient("fitness-thumbnail");
         }
 
-        public void Get()
+        public async Task UploadAsync(string containerName, string blobName, byte[] data, CancellationToken cancellationToken)
         {
+            var client = this.blobServiceClient.GetBlobContainerClient(containerName);
 
-            throw new NotImplementedException();
+            using var stream = new MemoryStream(data);
+
+            await client.UploadBlobAsync(blobName, stream, cancellationToken);
         }
-
-        public async Task<DownloadFile> GetFileAsync(string containerName, string blobName, long From, long? To, CancellationToken cancellationToken)
-        {
-            var containerClient = this.blobServiceClient.GetBlobContainerClient(containerName);
-
-            var client = containerClient.GetBlobClient(blobName);
-
-            using var memoryStream = new MemoryStream();
-
-            var options = new BlobDownloadOptions()
-            {
-                Range = new Azure.HttpRange(From, To)
-            };
-
-            var result = await client.DownloadContentAsync(options, cancellationToken);
-
-            if (result.GetRawResponse().IsError)
-            {
-                throw new ApplicationException("Error while downloading file.");
-            }
-
-            throw new NotImplementedException();
-        }
-
-        public async Task GetPropetiesAsync(string blobName, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class BlobSettings
-    {
-        public const string Key = nameof(BlobSettings);
-
-        public string Url { get; set; } = default!;
     }
 }

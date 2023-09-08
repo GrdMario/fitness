@@ -1,9 +1,11 @@
 ﻿namespace Fitness.Presentation.Api
 {
     using Fitness.Blocks.Common.Exceptions;
+    using Fitness.Presentation.Api.Internal.Mvc;
     using Fitness.Presentation.Api.Internal.Swagger;
     using Hellang.Middleware.ProblemDetails;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Http.Features;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +36,15 @@
                 .AddRouting(RouteOptions)
                 .AddProblemDetails(ProblemDetailsOptions)
                 .AddControllers()
+                .EnableInternalControllers()
                 .AddNewtonsoftJson(NewtonsoftOptions);
+
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueLengthLimit = int.MaxValue;
+                options.MultipartBodyLengthLimit = int.MaxValue; // if don't set default value is: 128 MB
+                options.MultipartHeadersLengthLimit = int.MaxValue;
+            });
 
             services.AddSwaggerConfiguration();
 
@@ -45,6 +55,16 @@
                 });
 
             return services;
+        }
+
+        private static IMvcBuilder EnableInternalControllers(this IMvcBuilder builder)
+        {
+            builder.ConfigureApplicationPartManager(manager =>
+            {
+                manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
+            });
+
+            return builder;
         }
 
         private static void SetProblemDetailsOptions(ProblemDetailsOptions options, IHostEnvironment env)

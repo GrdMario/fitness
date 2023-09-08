@@ -8,7 +8,6 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
     internal sealed class RefreshTokenRepository : IRefreshTokenRepository
     {
         private readonly DbSet<RefreshToken> refreshTokens;

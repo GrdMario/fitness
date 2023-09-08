@@ -36,6 +36,11 @@
            .GetSection(SecurityAdapterSettings.Key)
            .Get<SecurityAdapterSettings>() ?? throw new ArgumentNullException(nameof(this.SecurityAdapterSettings));
 
+        public BlobSettings BlobSettings =>
+           this.Configuration
+           .GetSection(BlobSettings.Key)
+           .Get<BlobSettings>() ?? throw new ArgumentNullException(nameof(this.BlobSettings));
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
@@ -43,7 +48,7 @@
             services.AddApplicationLayer();
             services.AddSecurityAdapter(this.SecurityAdapterSettings);
             services.AddEmailAdapter();
-            services.AddBlobLayer();
+            services.AddBlobLayer(this.BlobSettings);
             services.AddPresentationConfiguration(this.Environment);
         }
 

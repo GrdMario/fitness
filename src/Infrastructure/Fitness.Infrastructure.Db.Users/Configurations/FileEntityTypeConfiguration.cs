@@ -20,17 +20,13 @@
 
             builder.Property(p => p.CreatedAt).IsRequired();
 
-            builder.Property(p => p.Data).IsRequired();
+            builder.Property(p => p.FileLength).IsRequired();
 
             builder.Property(p => p.EntityId).IsRequired();
 
             builder.Property(p => p.FileExtensionId).IsRequired();
 
-            builder.HasOne(p => p.FileType).WithMany().HasForeignKey(fk => fk.FileTypeId);
-
             builder.Property(p => p.FileTypeId).IsRequired();
-
-            builder.HasOne(p => p.FileExtension).WithMany().HasForeignKey(fk => fk.FileExtensionId);
         }
     }
 }
